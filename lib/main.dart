@@ -26,15 +26,14 @@ class MapSelectionScreen extends StatefulWidget {
 }
 
 class _MapSelectionScreenState extends State<MapSelectionScreen> {
-  // Default coordinates set to Cupertino, CA
+  // Default map position set to Cupertino, CA
   LatLng _selectedLocation = const LatLng(37.3349, -122.0090); 
   bool _isSpoofing = false;
 
-  // CHANGE THIS: Replace with your Windows PC's actual local network IP address
-  // (e.g., '192.168.1.50'). If testing on the same machine, leave as 'localhost'.
-  final String _serverIp = 'localhost'; 
+  // Your exact Windows PC local network IP address
+  final String _serverIp = '192.168.1.12'; 
 
-  /// Sends the selected coordinates to the Windows Python server via network request
+  /// Sends coordinates over Wi-Fi to your Windows Python desktop background engine
   Future<void> _updateLocationOnServer() async {
     final url = Uri.parse('http://$_serverIp:5000/spoof');
     try {
@@ -59,7 +58,7 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
     }
   }
 
-  /// Tells the Windows Python server to stop spoofing and reset the GPS
+  /// Sends a cancellation signal to return the device to hardware satellite GPS
   Future<void> _stopLocationOnServer() async {
     final url = Uri.parse('http://$_serverIp:5000/stop');
     try {
@@ -109,7 +108,7 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
       ),
       body: Column(
         children: [
-          // Displays the world map and sets user click configurations
+          // Displays the world map correctly inside the canvas area
           Expanded(
             child: FlutterMap(
               options: MapOptions(
@@ -123,8 +122,8 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
               ),
               children: [
                 TileLayer(
-                  urlTemplate: 'https://openstreetmap.org{z}/{x}/{y}.png',
-                  userAgentPackageName: 'com.vanishclone.app', // Fixes the gray map screen issue
+                  urlTemplate: 'https://openstreetmap.org{z}/{x}/{y}.png', // Secure mapping for iOS
+                  userAgentPackageName: 'com.vanishclone.app',
                 ),
                 MarkerLayer(
                   markers: [
@@ -143,7 +142,7 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
               ],
             ),
           ),
-          // Control panel UI containing the actionable teleport hooks
+          // Interface controls showing raw parameters and injection buttons
           Container(
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
