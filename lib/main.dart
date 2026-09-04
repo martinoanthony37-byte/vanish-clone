@@ -31,7 +31,7 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
   bool _isSpoofing = false;
 
   // Your exact Windows PC local network IP address
-  final String _serverIp = '192.168.1.12'; 
+  final String _serverIp = '192.168.137.1'; 
 
   /// Sends coordinates over Wi-Fi to your Windows Python desktop background engine
   Future<void> _updateLocationOnServer() async {
